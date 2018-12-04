@@ -8,7 +8,7 @@ from flask_restplus import Api
 # local import
 from config import app_config
 from api import api_blueprint
-from api.models import db, migrate
+from api.models import (db, migrate)
 
 
 # initialize RestPlus with the API blueprint

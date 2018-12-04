@@ -6,7 +6,7 @@ from datetime import datetime
 from uuid import uuid4
 
 # local imports
-from main import db
+from . import db
 from .model_operation import ModelOperation
 
 

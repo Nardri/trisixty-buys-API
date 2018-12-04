@@ -1,7 +1,7 @@
 """User model"""
 
 # local import
-from main import db
+from . import db
 from .Base_model import BaseModel
 
 
