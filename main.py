@@ -55,7 +55,7 @@ def create_app(env):
         """Index route for the API"""
         return jsonify(
                 status='success',
-                data='Biabs version 1.0',
+                data='Yard-it version 1.0',
         )
 
     return app

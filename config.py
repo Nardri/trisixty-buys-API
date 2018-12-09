@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path, verbose=True)
 
-defaultDB = 'postgresql://postgres:123456@localhost:5432/biabs'
+defaultDB = 'postgresql://postgres:123456@localhost:5432/yardit'
 
 
 class Config(object):

@@ -5,7 +5,7 @@ from main import create_app
 
 
 # get the environment name
-env = getenv('FLASK_ENV')
+env = getenv('FLASK_ENV', default='production')
 app = create_app(env)
 
 
