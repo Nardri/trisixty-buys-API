@@ -1,8 +1,20 @@
 """Module for Pytest Configuration"""
 
+# system imports
 from os import getenv, environ
+
+# third party imports
 import pytest
+
+# local import
 from main import create_app
+
+# models
+from api.models.user import User
+from api.models.db_config import db
+
+# mocks
+from .mocks.user_mock_data import NEW_USER
 
 
 testing_env = 'testing'
@@ -32,7 +44,7 @@ def flask_app():
     ctx.pop()
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def client(flask_app):
     """Setup client for making http requests, this will be run on every test.
 
@@ -49,3 +61,44 @@ def client(flask_app):
 
     yield client
 
+
+@pytest.fixture(scope='module')
+def init_db(flask_app):
+    """Fixture to initialize the database"""
+
+    db.create_all()
+    yield db
+    db.session.close()
+    db.drop_all()
+
+
+@pytest.fixture(scope='module')
+def headers():
+    """header data.
+
+    Returns:
+        dict: The header dictionary
+
+    """
+
+    return {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer iiu'
+    }
+
+
+@pytest.fixture(scope='module')
+def create_new_user(init_db):
+    """Creates a new user.
+
+    Args:
+        init_db (func): Initialize the database
+
+    Returns:
+        Instance: user instance.
+
+    """
+
+    user_instance = User(**NEW_USER)
+
+    return user_instance

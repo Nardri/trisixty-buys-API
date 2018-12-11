@@ -1,10 +1,29 @@
-"""Database setup"""
+"""Models"""
 
-# Third party library
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from sqlalchemy import event
+
+from .user import User
+
+from api.utilities.push_id import PushID
 
 
-# initialization of the database and migration
-db = SQLAlchemy()
-migrate = Migrate()
+def generate_unique_id(mapper, connection, target):
+    """Generates a firebase fancy unique Id
+
+        Args:
+            mapper (obj): The current model class
+            connection (obj): The current database connection
+            target (obj): The current model instance
+    Returns:
+        None
+
+    """
+    push_id = PushID()
+    target.id = push_id.next_id()
+
+
+tables = [User, ]
+
+for table in tables:
+    event.listen(table, 'before_insert', generate_unique_id)
+
