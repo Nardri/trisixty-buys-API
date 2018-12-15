@@ -4,7 +4,7 @@
 import pytest
 
 # Utilities
-from api.utilities.custom_validations import ValidationError
+from api.utilities.validations.custom_validations import ValidationError
 from api.utilities.constants import EXCLUDES
 
 # schema
@@ -60,4 +60,3 @@ class TestUserSchema:
         assert NEW_USER['first_name'] == user_data_object['firstName']
         assert NEW_USER['last_name'] == user_data_object['lastName']
         assert NEW_USER['email'] == user_data_object['email']
-

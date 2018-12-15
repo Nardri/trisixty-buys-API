@@ -25,11 +25,8 @@ class ModelOperation(object):
 
         """
         if not kwargs:
-            instance = cls.query.filter_by(deleted=False).order_by(cls.created_at)
+            instance = cls.query.filter_by(deleted=False).order_by(
+                cls.created_at)
         else:
             instance = cls.query.filter_by(**kwargs)
         return instance
-
-
-
-

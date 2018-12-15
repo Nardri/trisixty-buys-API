@@ -17,6 +17,7 @@ marshmallow = "*"
 authlib = "*"
 numpy = "*"
 pytest-cov = "*"
+yapf = "*"
 
 [dev-packages]
 

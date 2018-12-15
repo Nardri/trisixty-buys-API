@@ -22,8 +22,9 @@ def generate_unique_id(mapper, connection, target):
     target.id = push_id.next_id()
 
 
-tables = [User, ]
+tables = [
+    User,
+]
 
 for table in tables:
     event.listen(table, 'before_insert', generate_unique_id)
-

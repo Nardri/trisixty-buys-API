@@ -1,7 +1,7 @@
 """Module for all base schemas"""
 
 from marshmallow import fields, Schema
-from api.utilities.custom_validations import ValidationError
+from api.utilities.validations.custom_validations import ValidationError
 
 
 class BaseSchema(Schema):
@@ -23,7 +23,3 @@ class BaseSchema(Schema):
                 dict(errors=errors, message='An error occurred'), 400)
 
         return data
-
-
-
-

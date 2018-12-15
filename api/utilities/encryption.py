@@ -3,7 +3,7 @@
 # standard imports
 import hashlib
 import binascii
-from os import urandom
+from os import urandom, getenv
 from uuid import uuid4
 from datetime import datetime, timedelta
 
@@ -57,7 +57,8 @@ class Encryption:
 
         """
 
-        # get the first 64 characters from the stored password, this is the salt
+        # get the first 64 characters from the stored
+        # password, this is the salt
         salt = stored_password[:64]
 
         # get the remaining characters from the 64th index,
@@ -67,8 +68,7 @@ class Encryption:
         # hash the provided password
         pwdhash = hashlib.pbkdf2_hmac('sha512',
                                       provided_password.encode(CHARSETS[0]),
-                                      salt.encode(CHARSETS[1]),
-                                      100000)
+                                      salt.encode(CHARSETS[1]), 100000)
         # convert the hash to a hexadecimal and decode to ascii
         pwdhash = binascii.hexlify(pwdhash).decode(CHARSETS[1])
 
@@ -86,10 +86,7 @@ class Encryption:
             String: JWT token
 
         """
-
-        header = {
-            'alg': 'RS256'
-        }
+        header = {'alg': 'RS256'}
 
         data = {
             "data": payload,
@@ -98,10 +95,10 @@ class Encryption:
             "aud": "Yard-it.com.ng",
             "iss": "Yard-it-API"
         }
-        private_key = open('Jwt_key').read()
+        private_key = getenv('JWT_PRIVATE_KEY')
 
-        token = jwt.encode(header=header, payload=data,
-                           key=private_key).decode(CHARSETS[0])
+        token = jwt.encode(
+            header=header, payload=data, key=private_key).decode(CHARSETS[0])
 
         return token
 
@@ -116,12 +113,8 @@ class Encryption:
             Dict: A dictionary of the decoded data.
 
         """
-
-        public_key = open('Jwt_key.pub').read()
+        public_key = getenv('JWT_PUBLIC_KEY')
 
         decoded_token = jwt.decode(token, public_key)
 
         return decoded_token
-
-
-

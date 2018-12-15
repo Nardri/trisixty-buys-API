@@ -1,8 +1,7 @@
 """Application main file"""
 
 # Third party library
-import json
-from flask import Flask, jsonify, g
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_restplus import Api
 
@@ -10,11 +9,11 @@ from flask_restplus import Api
 from config import app_config
 from api import api_blueprint
 from api.models.db_config import (db, migrate)
-from api.utilities.custom_validations import (ValidationError,
-                                              error_handler_blueprint)
+from api.utilities.validations.custom_validations import (
+    ValidationError, error_handler_blueprint)
 
 # initialize RestPlus with the API blueprint
-api = Api(api_blueprint,)
+api = Api(api_blueprint)
 
 
 def register_blueprints(application):
@@ -71,8 +70,8 @@ def create_app(env):
     def index():
         """Index route for the API"""
         return jsonify(
-                status='success',
-                data='Yard-it version 1.0',
+            status='success',
+            data='Yard-it version 1.0',
         )
 
     return app
