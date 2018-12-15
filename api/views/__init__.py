@@ -1,3 +1,3 @@
 """Views"""
 
-from .user import UserResource
+from .user import UserRegisterResource

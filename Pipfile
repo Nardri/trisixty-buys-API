@@ -13,6 +13,10 @@ flask-migrate = "*"
 "psycopg2" = "*"
 "psycopg2-binary" = "*"
 pytest = "*"
+marshmallow = "*"
+authlib = "*"
+numpy = "*"
+pytest-cov = "*"
 
 [dev-packages]
 

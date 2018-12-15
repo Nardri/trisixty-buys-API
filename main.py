@@ -1,6 +1,7 @@
 """Application main file"""
 
 # Third party library
+import json
 from flask import Flask, jsonify, g
 from flask_cors import CORS
 from flask_restplus import Api
@@ -8,11 +9,27 @@ from flask_restplus import Api
 # local import
 from config import app_config
 from api import api_blueprint
-from api.models import (db, migrate)
-
+from api.models.db_config import (db, migrate)
+from api.utilities.custom_validations import (ValidationError,
+                                              error_handler_blueprint)
 
 # initialize RestPlus with the API blueprint
-api = Api(api_blueprint)
+api = Api(api_blueprint,)
+
+
+def register_blueprints(application):
+    """Registers all blueprints
+
+    Args:
+        application (obj): Application instance
+
+    Returns:
+        None
+
+    """
+
+    application.register_blueprint(error_handler_blueprint)
+    application.register_blueprint(api_blueprint)
 
 
 def create_app(env):
@@ -34,11 +51,11 @@ def create_app(env):
     # cross origin initialization
     CORS(app)
 
-    # register the api blueprint
-    app.register_blueprint(api_blueprint)
+    # register the blueprint
+    register_blueprints(app)
 
     # import all models
-    from api.models import User
+    import api.models
 
     # import views
     import api.views
@@ -59,3 +76,11 @@ def create_app(env):
         )
 
     return app
+
+
+@api.errorhandler(ValidationError)
+@error_handler_blueprint.errorhandler(ValidationError)
+def handle_exceptions(err):
+    """Error handler for when validation error"""
+
+    return err.to_dict(), err.status_code
