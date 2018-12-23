@@ -6,12 +6,11 @@ from marshmallow.exceptions import ValidationError
 
 # utilities
 from api.utilities.validations.string_validations import validate_string
+from api.utilities.constants import MESSAGES
 
 
 class TestStringValidations:
     """Test for string validation"""
-
-    message = 'Field required and cannot be less than three character'
 
     def test_string_validation_succeeds(self):
         """Should return the data"""
@@ -25,7 +24,7 @@ class TestStringValidations:
         with pytest.raises(ValidationError) as excinfo:
             validate_string('')
 
-        assert str(excinfo.value) == self.message
+        assert str(excinfo.value) == MESSAGES['REQUIRED_FIELDS']
 
     def test_string_validation_with_two_characters_fails(self):
         """Should raise a validation error when data less than three
@@ -34,10 +33,4 @@ class TestStringValidations:
         with pytest.raises(ValidationError) as excinfo:
             validate_string('vi')
 
-        assert str(excinfo.value) == self.message
-
-
-
-
-
-
+        assert str(excinfo.value) == MESSAGES['REQUIRED_FIELDS']

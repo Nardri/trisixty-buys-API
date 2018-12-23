@@ -40,11 +40,11 @@ class TestUserSchema:
         with pytest.raises(ValidationError):
             schema.load_into_schema(USER)
 
-    def test_user_schema_serialization_succeeds(self, create_new_user):
+    def test_user_schema_serialization_succeeds(self, new_user):
         """Test the user data deserialization.
 
         Args:
-            create_new_user:
+            new_user (func): Creates new user to the database.
 
         Returns:
             None
@@ -53,7 +53,7 @@ class TestUserSchema:
 
         schema = UserSchema(exclude=EXCLUDES)
 
-        user = create_new_user.save()
+        user = new_user.save()
 
         user_data_object = schema.dump(user).data
 
