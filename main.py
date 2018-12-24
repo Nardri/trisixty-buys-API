@@ -45,6 +45,7 @@ def create_app(env):
 
     # initialization the application
     app = Flask(__name__)
+    app.url_map.strict_slashes = False
     app.config.from_object(app_config[env])
 
     # cross origin initialization

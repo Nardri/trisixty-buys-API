@@ -1,5 +1,6 @@
 """String validations"""
 
+# third part imports
 from marshmallow import ValidationError
 
 
@@ -10,4 +11,4 @@ def validate_string(data):
         return data
     else:
         raise ValidationError('Field required and cannot be less '
-                              'than three character')
+                              'than three character.')

@@ -14,7 +14,6 @@ class TestUserModel:
     """Test for User model"""
 
     def test_save(self, init_db):
-
         """Test the model can save data to the database.
 
         Args:
@@ -31,12 +30,11 @@ class TestUserModel:
         assert user.last_name == NEW_USER['last_name']
         assert user.email == NEW_USER['email']
 
-    def test_get(self, create_new_user):
-
+    def test_get(self, new_user):
         """Test that we can get data from the model.
 
         Args:
-            create_new_user (func): Creates new user to the database.
+            new_user (func): Creates new user to the database.
 
         Returns:
             None
@@ -50,30 +48,21 @@ class TestUserModel:
         assert user['lastName'] == NEW_USER['last_name']
         assert user['email'] == NEW_USER['email']
 
-    def test_get_with_repr(self, create_new_user):
-
+    def test_get_with_repr(self, new_user):
         """Test the model class methods.
 
         Args:
-            create_new_user (func): Creates new user to the database.
+            new_user (func): Creates new user to the database.
 
         Returns:
             None
 
         """
 
-        user_instance = create_new_user
+        user_instance = new_user
 
         user_details = user_instance.query.first()
 
         user_data_string = '<User {}>'.format(user_instance.email)
 
         assert str(user_details) == user_data_string
-
-
-
-
-
-
-
-

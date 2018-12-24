@@ -10,8 +10,8 @@ class BaseSchema(Schema):
     id = fields.String(dump_only=True)
     deleted = fields.Boolean(dump_only=True)
 
-    created_at = fields.DateTime(dump_only=True)
-    updated_at = fields.DateTime(dump_only=True)
+    created_at = fields.DateTime(dump_only=True, dump_to='createdAt')
+    updated_at = fields.DateTime(dump_only=True, dump_to='updatedAt')
 
     def load_into_schema(self, data, partial=False):
         """Helper function to load python objects into schema"""

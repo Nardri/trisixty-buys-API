@@ -14,8 +14,7 @@ from api.models.user import User
 from api.models.db_config import db
 
 # mocks
-from .mocks.user_mock_data import NEW_USER
-
+from .mocks.user_mock_data import NEW_USER, NEW_USER_2
 
 testing_env = 'testing'
 environ['FLASK_ENV'] = testing_env
@@ -81,14 +80,11 @@ def headers():
 
     """
 
-    return {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer iiu'
-    }
+    return {'Content-Type': 'application/json', 'Authorization': 'Bearer iiu'}
 
 
 @pytest.fixture(scope='module')
-def create_new_user(init_db):
+def new_user(init_db):
     """Creates a new user.
 
     Args:
@@ -100,5 +96,22 @@ def create_new_user(init_db):
     """
 
     user_instance = User(**NEW_USER)
+
+    return user_instance
+
+
+@pytest.fixture(scope='module')
+def new_user_two(init_db):
+    """Creates a new user.
+
+    Args:
+        init_db (func): Initialize the database
+
+    Returns:
+        Instance: user instance.
+
+    """
+
+    user_instance = User(**NEW_USER_2)
 
     return user_instance

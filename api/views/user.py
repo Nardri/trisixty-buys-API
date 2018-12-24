@@ -19,7 +19,6 @@ from api.utilities.constants import MESSAGES, EXCLUDES
 from api.utilities.push_id import PushID
 from api.utilities.helpers.format_data import format_user
 
-
 # instantiating FireBase fancy id
 push_id = PushID()
 
@@ -29,7 +28,7 @@ class UserRegisterResource(Resource):
     """Resource for UserRegister"""
 
     def post(self):
-        """Get request for users"""
+        """Post request for user registration"""
 
         # instantiate the user schema
         user_schema = UserSchema()
@@ -37,7 +36,7 @@ class UserRegisterResource(Resource):
         # get the request in json format
         request_json = request.get_json()
 
-        # deserialize and validate the request
+        # serialize and validate the request
         user_details = user_schema.load_into_schema(request_json, partial=True)
         user_details['first_name'] = user_details['first_name'].strip()
         user_details['last_name'] = user_details['last_name'].strip()
@@ -73,15 +72,50 @@ class UserRegisterResource(Resource):
             }
         }, 201
 
-    def get(self):
-        """get"""
 
-        user_schema = UserSchema(many=True, exclude=EXCLUDES)
+@api.route('/user/login')
+class LoginResource(Resource):
+    """Resource for user login"""
 
-        users_object = User.query_()
+    def post(self):
+        """Post request for user login"""
 
-        obj = user_schema.dump(users_object).data
+        schema = UserSchema()
 
-        return {
-            'data': obj
-        }, 200
+        # get the request details as json
+        request_json = request.get_json()
+
+        # serialize and find the user data in the database
+        user_details = schema.load_into_schema(request_json, partial=True)
+        found_user = User.query_(email=user_details['email'], deleted=False)\
+            .first()
+
+        # throw an error if not found
+        if not found_user:
+            return {'status': 'error', 'message': MESSAGES['NOT_FOUND']}, 404
+
+        # deserialize the user data if found, and verify the password
+        user = schema.dump(found_user).data
+        is_match = Encryption.verify(user['password'],
+                                     user_details['password'])
+
+        # if password did not match throw and error
+        if not is_match:
+            return {
+                'status': 'error',
+                'message': MESSAGES['UNAUTHORIZED']
+            }, 401
+
+        else:
+
+            # format the data and generate a JWT token.
+            formatted_data = format_user(user)
+            token = Encryption.tokenize(formatted_data)
+
+            return {
+                'status': 'success',
+                'message': MESSAGES['LOGIN'],
+                'data': {
+                    'token': token,
+                }
+            }, 200
