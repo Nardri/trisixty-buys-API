@@ -1,6 +1,6 @@
-[![CircleCI](https://circleci.com/gh/veeqtor/Yardit-API.svg?style=svg)](https://circleci.com/gh/veeqtor/Yardit-API)
-[![Maintainability](https://api.codeclimate.com/v1/badges/d253190ce3f5e5abcffc/maintainability)](https://codeclimate.com/github/veeqtor/Yardit-API/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/d253190ce3f5e5abcffc/test_coverage)](https://codeclimate.com/github/veeqtor/Yardit-API/test_coverage)
+[![CircleCI](https://circleci.com/gh/Meeqan/trisixty-buys-API.svg?style=svg)](https://circleci.com/gh/Meeqan/trisixty-buys-API)
+[![Maintainability](https://api.codeclimate.com/v1/badges/1934168062de29d65434/maintainability)](https://codeclimate.com/github/Meeqan/trisixty-buys-API/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/1934168062de29d65434/test_coverage)](https://codeclimate.com/github/Meeqan/trisixty-buys-API/test_coverage)
 
 # Trisixty-buys-API-Flask
 A side project called Trisixty made with Python
