@@ -6,7 +6,7 @@
 A side project called Trisixty made with Python
 
 
-###Git Commit Hook
+### Git Commit Hook
 Git pre-commit hook to check staged Python files for formatting issues with
 yapf.
 
