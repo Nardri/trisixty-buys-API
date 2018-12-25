@@ -7,7 +7,7 @@ from api.models.user import User
 from api.schemas.user_schema import UserSchema
 
 # mocks
-from ..mocks.user_mock_data import NEW_USER
+from ..mocks.user_mock_data import FIXTURE_NEW_USER
 
 
 class TestUserModel:
@@ -24,11 +24,11 @@ class TestUserModel:
 
         """
 
-        user = User(**NEW_USER).save()
+        user = User(**FIXTURE_NEW_USER).save()
 
-        assert user.first_name == NEW_USER['first_name']
-        assert user.last_name == NEW_USER['last_name']
-        assert user.email == NEW_USER['email']
+        assert user.first_name == FIXTURE_NEW_USER['first_name']
+        assert user.last_name == FIXTURE_NEW_USER['last_name']
+        assert user.email == FIXTURE_NEW_USER['email']
 
     def test_get(self, new_user):
         """Test that we can get data from the model.
@@ -41,12 +41,14 @@ class TestUserModel:
 
         """
 
+        new_user.save()
+
         schema = UserSchema(many=True)
         user = schema.dump(User.query_()).data[0]
 
-        assert user['firstName'] == NEW_USER['first_name']
-        assert user['lastName'] == NEW_USER['last_name']
-        assert user['email'] == NEW_USER['email']
+        assert user['firstName'] == FIXTURE_NEW_USER['first_name']
+        assert user['lastName'] == FIXTURE_NEW_USER['last_name']
+        assert user['email'] == FIXTURE_NEW_USER['email']
 
     def test_get_with_repr(self, new_user):
         """Test the model class methods.
@@ -59,7 +61,7 @@ class TestUserModel:
 
         """
 
-        user_instance = new_user
+        user_instance = new_user.save()
 
         user_details = user_instance.query.first()
 

@@ -5,13 +5,16 @@ import hashlib
 import binascii
 from os import urandom, getenv
 from uuid import uuid4
-from datetime import datetime, timedelta
 
 # third party imports
 from authlib.specs.rfc7519 import jwt
 
 # local imports
 from api.utilities.constants import CHARSETS
+from api.utilities.constants import MESSAGES
+from api.utilities.validations.custom_validations_error import ValidationError
+from api.utilities.helpers.date_time import date_time
+from api.utilities.helpers.errors import raises
 
 
 class Encryption:
@@ -76,11 +79,12 @@ class Encryption:
         return pwdhash == stored_password
 
     @staticmethod
-    def tokenize(payload):
+    def tokenize(payload, subject=None, **kwargs):
         """Generates a token for the given payload.
 
         Args:
             payload (dict): Payload
+            subject (str): Subject of the encryption
 
         Returns:
             String: JWT token
@@ -89,11 +93,18 @@ class Encryption:
         header = {'alg': 'RS256'}
 
         data = {
-            "data": payload,
-            "iat": datetime.now(),
-            "exp": datetime.now() + timedelta(days=14),
-            "aud": "Yard-it.com.ng",
-            "iss": "Yard-it-API"
+            'data':
+            payload,
+            'iat':
+            date_time.time(),
+            'exp':
+            date_time.time(manipulate=True, manipulation_type='ADD', **kwargs),
+            'aud':
+            'Yard-it.com.ng',
+            'iss':
+            'Yard-it-API',
+            'sub':
+            subject
         }
         private_key = getenv('JWT_PRIVATE_KEY')
 
@@ -113,8 +124,19 @@ class Encryption:
             Dict: A dictionary of the decoded data.
 
         """
+
         public_key = getenv('JWT_PUBLIC_KEY')
 
-        decoded_token = jwt.decode(token, public_key)
+        decoded_token = jwt.decode(token, public_key) if token else None
+
+        dt = date_time.time().timestamp()
+
+        now = int(round(dt))
+
+        if not decoded_token:
+            raises('No token was provided', 400)
+
+        if decoded_token and decoded_token['exp'] < now:
+            raises(MESSAGES['EXPIRED_TOKEN'], 403)
 
         return decoded_token

@@ -18,6 +18,8 @@ authlib = "*"
 numpy = "*"
 pytest-cov = "*"
 yapf = "*"
+sendgrid = "*"
+pytz = "*"
 
 [dev-packages]
 

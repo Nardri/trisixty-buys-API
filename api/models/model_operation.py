@@ -7,10 +7,26 @@ class ModelOperation(object):
     """Model operation"""
 
     def save(self):
-        """Save to the database"""
+        """Save to the database."""
 
         db.session.add(self)
         db.session.commit()
+        return self
+
+    def update_(self, **kwargs):
+        """Update entries.
+
+        Args:
+            **kwargs: kwargs to update
+
+        Returns:
+            object: Model Instance
+
+        """
+        for field, value in kwargs.items():
+            setattr(self, field, value)
+        db.session.commit()
+
         return self
 
     @classmethod
