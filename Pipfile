@@ -18,6 +18,12 @@ authlib = "*"
 numpy = "*"
 pytest-cov = "*"
 yapf = "*"
+sendgrid = "*"
+pytz = "*"
+social-auth-core = "*"
+social-auth-storage-sqlalchemy = "*"
+social-auth-app-flask = "*"
+social-auth-app-flask-sqlalchemy = "*"
 
 [dev-packages]
 

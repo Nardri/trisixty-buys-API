@@ -1,7 +1,7 @@
 """Module for all base schemas"""
 
 from marshmallow import fields, Schema
-from api.utilities.validations.custom_validations import ValidationError
+from api.utilities.validations.custom_validations_error import ValidationError
 
 
 class BaseSchema(Schema):

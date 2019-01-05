@@ -9,7 +9,7 @@ from flask_restplus import Api
 from config import app_config
 from api import api_blueprint
 from api.models.db_config import (db, migrate)
-from api.utilities.validations.custom_validations import (
+from api.utilities.validations.custom_validations_error import (
     ValidationError, error_handler_blueprint)
 
 # initialize RestPlus with the API blueprint

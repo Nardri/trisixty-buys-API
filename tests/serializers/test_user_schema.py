@@ -4,14 +4,14 @@
 import pytest
 
 # Utilities
-from api.utilities.validations.custom_validations import ValidationError
+from api.utilities.validations.custom_validations_error import ValidationError
 from api.utilities.constants import EXCLUDES
 
 # schema
 from api.schemas.user_schema import UserSchema
 
 # mocks
-from ..mocks.user_mock_data import USER, NEW_USER
+from ..mocks.user_mock_data import USER_DATA, FIXTURE_NEW_USER
 
 
 class TestUserSchema:
@@ -22,13 +22,13 @@ class TestUserSchema:
 
         schema = UserSchema()
 
-        user = schema.load_into_schema(USER, partial=True)
+        user = schema.load_into_schema(USER_DATA, partial=True)
 
         user_deserialized = {
-            'last_name': USER['lastname'],
-            'password': USER['password'],
-            'email': USER['email'],
-            'first_name': USER['firstname']
+            'last_name': USER_DATA['lastname'],
+            'password': USER_DATA['password'],
+            'email': USER_DATA['email'],
+            'first_name': USER_DATA['firstname']
         }
 
         assert user == user_deserialized
@@ -38,7 +38,7 @@ class TestUserSchema:
 
         schema = UserSchema()
         with pytest.raises(ValidationError):
-            schema.load_into_schema(USER)
+            schema.load_into_schema(USER_DATA)
 
     def test_user_schema_serialization_succeeds(self, new_user):
         """Test the user data deserialization.
@@ -57,6 +57,6 @@ class TestUserSchema:
 
         user_data_object = schema.dump(user).data
 
-        assert NEW_USER['first_name'] == user_data_object['firstName']
-        assert NEW_USER['last_name'] == user_data_object['lastName']
-        assert NEW_USER['email'] == user_data_object['email']
+        assert FIXTURE_NEW_USER['first_name'] == user_data_object['firstName']
+        assert FIXTURE_NEW_USER['last_name'] == user_data_object['lastName']
+        assert FIXTURE_NEW_USER['email'] == user_data_object['email']

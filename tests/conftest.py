@@ -13,8 +13,11 @@ from main import create_app
 from api.models.user import User
 from api.models.db_config import db
 
+# utilities
+from api.utilities.encryption import Encryption
+
 # mocks
-from .mocks.user_mock_data import NEW_USER, NEW_USER_2
+from .mocks.user_mock_data import FIXTURE_NEW_USER, FIXTURE_NEW_USER_TWO
 
 testing_env = 'testing'
 environ['FLASK_ENV'] = testing_env
@@ -43,9 +46,10 @@ def flask_app():
     ctx.pop()
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture
 def client(flask_app):
-    """Setup client for making http requests, this will be run on every test.
+    """Setup client for making http requests, this will be run on every
+    test function.
 
     Args:
         flask_app (func): Flask application instance
@@ -61,8 +65,8 @@ def client(flask_app):
     yield client
 
 
-@pytest.fixture(scope='module')
-def init_db(flask_app):
+@pytest.fixture
+def init_db():
     """Fixture to initialize the database"""
 
     db.create_all()
@@ -71,7 +75,7 @@ def init_db(flask_app):
     db.drop_all()
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def headers():
     """header data.
 
@@ -83,7 +87,7 @@ def headers():
     return {'Content-Type': 'application/json', 'Authorization': 'Bearer iiu'}
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture
 def new_user(init_db):
     """Creates a new user.
 
@@ -95,12 +99,12 @@ def new_user(init_db):
 
     """
 
-    user_instance = User(**NEW_USER)
+    user_instance = User(**FIXTURE_NEW_USER)
 
     return user_instance
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture
 def new_user_two(init_db):
     """Creates a new user.
 
@@ -112,6 +116,16 @@ def new_user_two(init_db):
 
     """
 
-    user_instance = User(**NEW_USER_2)
+    user_instance = User(**FIXTURE_NEW_USER_TWO)
 
     return user_instance
+
+
+@pytest.fixture
+def generate_token():
+    """Generate JWT Token for tests."""
+
+    def _encrypt(payload, subject, **kwargs):
+        return Encryption.tokenize(payload, subject=subject, **kwargs)
+
+    return _encrypt
