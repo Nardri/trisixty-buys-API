@@ -17,5 +17,6 @@ def format_user(user):
         'firstname': user['firstName'],
         'lastName': user['lastName'],
         'username': user['username'],
-        'email': user['email']
+        'email': user['email'],
+        'verified': user['verified']
     }

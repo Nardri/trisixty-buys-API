@@ -107,4 +107,4 @@ venv.bak/
 .idea/
 .vscode/
 .DS_Store
-Jwt_key
+Jwt_keysendgrid.env

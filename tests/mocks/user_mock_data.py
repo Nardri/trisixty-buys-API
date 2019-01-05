@@ -4,34 +4,54 @@
 from api.utilities.encryption import Encryption
 from api.utilities.push_id import PushID
 
-USER = {
+USER_DATA = {
     'firstname': 'Test',
     'lastname': 'User',
     'email': 'test.user@example.com',
-    'password': 'password1234',
+    'password': 'Password@1234',
 }
 
-NEW_USER = {
+FIXTURE_NEW_USER = {
     'first_name': 'Test',
     'last_name': 'User',
     'username': PushID().next_id()[8:],
     'email': 'test.user@example.com',
-    'password': Encryption.hash('password123')
+    'password': Encryption.hash('Password@1234'),
+    'verified': True,
+    'token': None,
+    'password_reset': None
 }
 
-NEW_USER_2 = {
-    'first_name': 'Test1',
-    'last_name': 'User2',
-    'username': PushID().next_id()[8:],
-    'email': 'test1.user2@example.com',
-    'password': Encryption.hash('password123')
+FIXTURE_NEW_USER_TWO = {
+    'first_name':
+    'Test',
+    'last_name':
+    'User',
+    'username':
+    PushID().next_id()[8:],
+    'email':
+    'test.user@example.com',
+    'password':
+    Encryption.hash('Password@1234'),
+    'verified':
+    False,
+    'token':
+    Encryption.tokenize(
+        dict(email='test.user@example.com'),
+        subject='Email_verification',
+        minutes=5),
+    'password_reset':
+    Encryption.tokenize(
+        dict(email='test.user@example.com'),
+        subject='password_reset',
+        minutes=5)
 }
 
 INCOMPLETE_USER = {
     'firstname': 'i',
     'lastname': 'i',
     'email': 'test.user@example.com',
-    'password': 'password1234'
+    'password': 'Password@1234'
 }
 
 DECODED_TOKEN = {
@@ -39,19 +59,16 @@ DECODED_TOKEN = {
         'firstname': 'Test',
         'lastname': 'User',
         'email': 'test.user@example.com',
-        'password': 'password1234'
+        'password': 'Password@1234'
     },
     'iat': 1545321234,
     'exp': 1546530834,
     'aud': 'Yard-it.com.ng',
-    'iss': 'Yard-it-API'
+    'iss': 'Yard-it-API',
+    'sub': 'Testing'
 }
 
-LOGIN_USER = {'email': 'test1.user2@example.com', 'password': 'password123'}
-
-WRONG_USER_DATA = {'email': 'test1.user2@example.com', 'password': 'password1'}
-
-WRONG_USER_EMAIL = {'email': 'test.user2@example.com', 'password': 'password1'}
+WRONG_USER_EMAIL = {'email': 'wrong@example.com', 'password': 'Password@1234'}
 
 INVALID_USER_LOGIN_DATA = {'email': '', 'password': ''}
 

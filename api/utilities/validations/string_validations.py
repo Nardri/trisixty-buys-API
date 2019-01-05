@@ -2,6 +2,7 @@
 
 # third part imports
 from marshmallow import ValidationError
+from api.utilities.constants import MESSAGES
 
 
 def validate_string(data):
@@ -10,5 +11,4 @@ def validate_string(data):
     if data and len(data) > 3:
         return data
     else:
-        raise ValidationError('Field required and cannot be less '
-                              'than three character.')
+        raise ValidationError(MESSAGES['REQUIRED_FIELDS'])
